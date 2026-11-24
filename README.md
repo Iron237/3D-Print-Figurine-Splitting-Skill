@@ -47,9 +47,15 @@ git clone https://github.com/Iron237/3D-Print-Figurine-Splitting-Skill.git
 
 见[接缝、定位面与真实接口试打操作说明](skills/figurine-print-kit/references/seams-and-coupons.md)。
 
+## 脸件修顺与多盘 3MF
+
+脸背长榫和颈座从不同方向插入。分别沿轴检查卡点，在原键形上做平滑导入口，量清还剩多长直段、榫尖到孔底有多少余量，再把脸放回刘海里复看眼睑、鼻唇和两侧轮廓。
+
+整套收进一个可编辑的 3MF 时，按实际上的线材、喷嘴和时间分盘。一卷白 PLA 喷涂的件可共盘。案例的 15 件按 P2S 排为三盘，前两盘用 0.2 mm，最后一盘换 0.4 mm。每个零件可单独选择，装配视图仍能还原整尊人物。分盘说明标出实体换嘴和预设切换，工时与耗材来自最终工程逐盘切片。[中文操作指南](skills/figurine-print-kit/references/face-and-plates.md)
+
 ## 可选几何工具
 
-以下命令在仓库根目录执行。技能访谈和规范本身无需 Python。两个检查脚本输出 JSON。截样脚本在新目录生成一对 STL，输入模型保留原样。
+以下命令在仓库根目录执行。技能访谈和规范本身无需 Python。网格、配合和分盘检查脚本输出 JSON。截样脚本在新目录生成一对 STL，输入模型保留原样。
 
 ```sh
 python -m pip install -r requirements.txt
@@ -61,6 +67,7 @@ python -X utf8 skills/figurine-print-kit/scripts/check_fit.py assembly-check.jso
 - **inspect_mesh.py** 报告场景边界、实例、三角面、边界边、非流形边等；STL 的物理单位没有依据时保留未知。点云可初检，仍需重建才能作为切件实体。
 - **check_fit.py** 读取同一装配坐标中的毫米 STL，检测静态体积相交，并沿用户指定的分段平移路径采样。清单应列明移动件、留在原位的件和累计位移。各自贴床居中的打印 STL 需先恢复到装配坐标。退出码 0 表示所检范围在阈值内，1 为检出相交，2 为输入或运算失败。零件能否旋出、弹性变形或承重需另行验证。[清单格式与结果判读](skills/figurine-print-kit/references/verification.md)
 - **extract_fit_coupons.py** 在共同装配坐标中，沿插入轴从最终公母件截出一对真实小样。孔口坐标、截取半径和轴向范围按实际接口填写。[命令示例](skills/figurine-print-kit/references/seams-and-coupons.md#用脚本截取)
+- **inspect_plates.py** 读取 Bambu Studio 原生盘表、对象实例和项目预设；切片文件已有 G-code 时，还可读出切片头信息。用于对照母版与逐盘切片的零件清单。
 - **joint_demo.py** 生成一对带平面的定位榫和母座，用同一套几何演示沿轴拔出和横向拔出的区别。演示使用临时目录。
 
 最小清单如下。位移是相对装配姿态的累计平移。每步写明一起移动的件和仍会挡路的件，省略 paths 即只检查静态。细发束附近宜缩小步长或检查连续扫掠体。

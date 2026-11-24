@@ -1,6 +1,6 @@
 ---
 name: figurine-print-kit
-description: 将 AI 生成、摄影测量或扫描的手办白模优化为便于 3D 打印、喷涂和装配的实体分件。用于手办拆件、GK 白模分色、穿模修形、接缝修顺、定位榫和真实接口试打；支持先用 grill 逐项定方案，再实际切件。 Use for splitting AI-generated or scanned figurines into paintable, keyed 3D-printable parts, refining seams and extracting fit coupons from production joints.
+description: 将 AI 生成、摄影测量或扫描的手办白模优化为便于 3D 打印、喷涂和装配的实体分件。用于手办拆件、GK 白模分色、穿模修形、接缝修顺、定位榫、真实接口试打和按耗材分盘的 3MF 工程；支持先用 grill 逐项定方案，再实际切件。 Use for splitting AI-generated or scanned figurines into paintable, keyed 3D-printable parts, refining seams and extracting fit coupons from production joints, and preparing multi-plate print projects.
 ---
 
 # 手办打印分件
@@ -28,5 +28,7 @@ description: 将 AI 生成、摄影测量或扫描的手办白模优化为便于
 交付制作结果时，正式分件 STL 用同一物理比例、清晰编号和建议打印朝向；另存保留相对位置的装配文件或等效对照图。附分件喷涂表、装配和逆向拆卸顺序。修订已有套件或需要试配时，按[接缝、定位面与真实接口试打](references/seams-and-coupons.md)区分外露缝线、隐藏切面与孔口，保护原雕刻，按壁厚选择导入口和止口。从最终公母件原位截取小样，分别沿用正式件摆位和切片配置，单独统计。英文详见 [Seams, locating shoulders and fit coupons](references/seams-and-coupons.en.md)。
 
 回读**最终交付文件**，核对零件数量、闭合和尺寸，检查装配态、抽出路径与代表性切片。需要批量复核装配坐标 STL 时使用 [check_fit.py](scripts/check_fit.py)，输入与判读见 [验证工具](references/verification.md)。报告中区分几何检查、实际生成的切片和实机试打。
+
+脸背或颈座孔起插刮边时，沿各孔轴修顺导入口，保住面部细节、孔底和有效直段。用户需要一个分盘打印工程时，按实际线材、机型、喷嘴和整盘切片工时分组，在最终 3MF 上复核实例及每盘路径。见[脸部接口与分盘工程](references/face-and-plates.md)或 [English procedure](references/face-and-plates.en.md)。
 
 需要示范如何从访谈走到最终交付时，阅读 [250 mm PLA 手办复盘](references/worked-example.md)。其中的尺寸、件数和间隙属于该例。

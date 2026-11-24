@@ -47,9 +47,15 @@ Where a waist or sock has enough wall thickness, a D key can set rotation, an an
 
 See the [English procedure for seams, locating shoulders and production fit coupons](skills/figurine-print-kit/references/seams-and-coupons.en.md).
 
+## Face fit and multi-plate 3MF projects
+
+The rear hair key and neck enter the face on different axes. Locate the first contact on each axis. Blend the mouth into the keyed bore, measure the remaining straight engagement and bottom clearance, then check the eyelids, nose, lips and silhouette with the fringe in place.
+
+Group production parts in one editable 3MF by physical spool, nozzle and whole-plate time. Painted parts can share a white PLA spool. The 15-part P2S example uses two 0.2 mm plates followed by a single 0.4 mm plate. Parts stay individually selectable and their assembly transforms restore the sculpted pose. The plate guide identifies the physical nozzle and preset change. Times and material estimates come from slicing each plate of the final project. [English procedure](skills/figurine-print-kit/references/face-and-plates.en.md)
+
 ## Optional geometry tools
 
-Run these commands from the repository root. The interview and design guidance work independently of Python. The two inspection scripts report JSON. The coupon extractor writes two new STLs to a separate directory and preserves the input meshes.
+Run these commands from the repository root. The interview and design guidance work independently of Python. The mesh, fit and plate inspection scripts report JSON. The coupon extractor writes two new STLs to a separate directory and preserves the input meshes.
 
 ```sh
 python -m pip install -r requirements.txt
@@ -61,6 +67,7 @@ python -X utf8 skills/figurine-print-kit/scripts/check_fit.py assembly-check.jso
 - **inspect_mesh.py** reports scene bounds, instances, triangles, boundary and non-manifold edges. An STL's physical scale stays unknown until supplied. A point cloud can be inspected but still needs reconstruction before solid splitting.
 - **check_fit.py** checks static overlap and samples piecewise translations. Supply millimetre STLs in a shared assembled coordinate system. Restore the assembly transforms before using files that were individually centered on the print bed. Exit code 0 means measured overlaps stayed within the declared threshold, 1 means interference and 2 means invalid input or a failed computation. Rotation, flex, mechanical strength and motion between samples need separate evaluation.
 - **extract_fit_coupons.py** crops the final mating pair along its insertion axis in assembly coordinates. Supply the measured socket mouth, crop radius and axial extents. [Command example](skills/figurine-print-kit/references/seams-and-coupons.en.md#crop-with-the-helper)
+- **inspect_plates.py** reads the native Bambu Studio plate table, object instances and project preset. It also reads packaged slice headers when G-code is present. Use it to reconcile plate membership between a master and its verification slices.
 - **joint_demo.py** generates a D-shaped peg and socket in a temporary directory. It checks axial withdrawal and a sideways pull using the same parts.
 
 A minimal manifest for the fit checker is shown below. `offsets_mm` contains cumulative translations from the assembled pose. List the moving group and everything that remains in its way at this stage. Omitting `paths` runs only the static check. Use finer steps or a swept-volume check for delicate details.
