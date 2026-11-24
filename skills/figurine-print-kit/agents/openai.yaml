@@ -1,0 +1,4 @@
+interface:
+  display_name: "手办打印分件"
+  short_description: "从生成或扫描白模出发，逐项确认分色与分件，设计定位接口并验证打印装配"
+  default_prompt: "用 $figurine-print-kit 检查这个手办白模，和我逐项对齐分件与喷涂部位，再交付可打印、可装配的套件。"
