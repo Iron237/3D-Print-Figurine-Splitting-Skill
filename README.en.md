@@ -24,7 +24,7 @@ Attach the model and mention any known equipment, material, scale or constraints
 | Ask one question at a time | Start with a choice that changes the build. For example, “Do you want to hold the entire face in your hand to paint the eyes?” Give a recommendation grounded in the mesh and measure what can be measured. |
 | Agree on the parts | Record paint access, what stays attached for masking, seam location, insertion direction and fastening for each major part. Agree on whether a reference supplies colors or also authorizes sculpt changes. |
 | Cut and rebuild | Use hairlines, cuffs, waistbands or footwear openings where they provide a natural seam. Reconstruct hidden mating surfaces. Inspect both the separated parts and the assembled sculpt. |
-| Verify and deliver | Reopen the final STLs, check the assembled pose and intermediate withdrawal positions, then slice for the chosen process. Deliver numbered parts, an assembly reference, paint notes and assembly/disassembly order. Include fit coupons where useful. |
+| Verify and deliver | Reopen the final STLs, check the assembled pose and intermediate withdrawal positions, then slice for the chosen process. Deliver numbered parts, an assembly reference, paint notes and assembly/disassembly order. Where fit needs testing, crop the coupons from the final mating pair. |
 
 When likeness takes priority, relieve hidden intersections first. Try a small shift or a different assembly sequence before sacrificing a visible eyelid, finger, hair tip or fold. Keep fragile detail attached for masking if separation would damage the sculpt. Remove canceled additions from meshes, previews, inventories and the final package.
 
@@ -37,9 +37,19 @@ When likeness takes priority, relieve hidden intersections first. Try a small sh
 
 The installed skill includes detailed [interview guidance](skills/figurine-print-kit/references/grill.md) and [joint design and assembly notes](skills/figurine-print-kit/references/assembly.md) in Chinese. It can conduct the interview and deliver the job in the user's language.
 
+## When an existing split has rough edges
+
+Separate the pair, inspect the visible seam, hidden cut and socket from the same angle, then section along the insertion axis to find the first contact. Remesh and smooth a narrow band on the hidden cut while preserving hair tips, eyelids and fabric folds. A shared trim boundary on both halves helps prevent daylight along a visible seam.
+
+Where a waist or sock has enough wall thickness, a D key can set rotation, an annular shoulder can set depth and a chamfer can guide entry. To test the joint, crop both final parts with the same cutter. Keep the peg root and tip, socket bottom, shoulder and adjacent walls. Slice each half with its production orientation and process settings. Crop the entire group to test simultaneous engagement of multiple pegs.
+
+> Use $figurine-print-kit to smooth the sock opening and the back of the face while preserving the assembled sculpt. Crop a matched pair from the final sock joint and another from the hair key. Give me the nozzle and print orientation so I can dry-fit both before printing the figure.
+
+See the [English procedure for seams, locating shoulders and production fit coupons](skills/figurine-print-kit/references/seams-and-coupons.en.md).
+
 ## Optional geometry tools
 
-Run these commands from the repository root. The interview and design guidance work independently of Python. The scripts read model files and write JSON to standard output.
+Run these commands from the repository root. The interview and design guidance work independently of Python. The two inspection scripts report JSON. The coupon extractor writes two new STLs to a separate directory and preserves the input meshes.
 
 ```sh
 python -m pip install -r requirements.txt
@@ -50,6 +60,7 @@ python -X utf8 skills/figurine-print-kit/scripts/check_fit.py assembly-check.jso
 
 - **inspect_mesh.py** reports scene bounds, instances, triangles, boundary and non-manifold edges. An STL's physical scale stays unknown until supplied. A point cloud can be inspected but still needs reconstruction before solid splitting.
 - **check_fit.py** checks static overlap and samples piecewise translations. Supply millimetre STLs in a shared assembled coordinate system. Restore the assembly transforms before using files that were individually centered on the print bed. Exit code 0 means measured overlaps stayed within the declared threshold, 1 means interference and 2 means invalid input or a failed computation. Rotation, flex, mechanical strength and motion between samples need separate evaluation.
+- **extract_fit_coupons.py** crops the final mating pair along its insertion axis in assembly coordinates. Supply the measured socket mouth, crop radius and axial extents. [Command example](skills/figurine-print-kit/references/seams-and-coupons.en.md#crop-with-the-helper)
 - **joint_demo.py** generates a D-shaped peg and socket in a temporary directory. It checks axial withdrawal and a sideways pull using the same parts.
 
 A minimal manifest for the fit checker is shown below. `offsets_mm` contains cumulative translations from the assembled pose. List the moving group and everything that remains in its way at this stage. Omitting `paths` runs only the static check. Use finer steps or a swept-volume check for delicate details.
@@ -69,6 +80,6 @@ A minimal manifest for the fit checker is shown below. `offsets_mm` contains cum
 
 ## A worked example
 
-A single-leg PLA figure was split into 15 production parts at 250 mm overall height. Its face came out for eye painting, the original curl stayed with the front hair, and the fine strap remained against the shirt for masking. The face and fringe were first combined in hand and seated on the neck. The rear hair then slid in from behind, carrying a long locating peg into the face. Per-side joint clearances varied from 0.20 to 0.25 mm. A separate pair of fit coupons was included. All 15 production parts were reimported and sliced. No physical print was made.
+A single-leg PLA figure was split into 15 production parts at 250 mm overall height. Its face came out for eye painting, the original curl stayed with the front hair, and the fine strap remained against the shirt for masking. The face and fringe were first combined in hand and seated on the neck. The rear hair then slid in from behind, carrying a long locating peg into the face. The first version included a nominal-clearance gauge. The revision added four annular seats and two matched coupon pairs cropped from the final sock and hair joints. Across the same 96 points around the supporting sock, the modeled axial height span fell from 1.77 mm to under 0.01 mm. All 15 production parts and four coupons were sliced. Physical fit is still untested.
 
 Those dimensions belong to that build. A resin bust or a smaller print needs its own measurements, load-path assessment and fit tests. The public [case notes](skills/figurine-print-kit/references/worked-example.md) describe the decisions and validation scope without distributing the source model.
